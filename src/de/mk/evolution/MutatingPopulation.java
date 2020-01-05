@@ -30,7 +30,7 @@ public class MutatingPopulation implements IPopulation{
     public void createFirstGeneration(){
         this.prototypeSnake = new Snake("Prototpye", new NNBrain(new SnakeVision()));
         System.out.print("Creating first generation...");
-        this.snakes = this.createFirstGeneration(POPULATION_SIZE, 2, 500);
+        this.snakes = this.createFirstGeneration(POPULATION_SIZE, 3, 500);
         System.out.println(" Done.");
         computeSnakesFitness(MIN_EVALUATION_RUNS);
         this.sortSnakes();

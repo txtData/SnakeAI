@@ -8,7 +8,7 @@ import de.mk.environment.Snake;
 public class Main {
 
     private static int MAX_GENERATIONS = 5000;
-    private static boolean SHOW_ALWAYS = false;
+    private static boolean SHOW_ALWAYS = true;
     private static int SHOW_GAME_AFTER_GENERATIONS = 10;
 
     public static void main(String[] args) {

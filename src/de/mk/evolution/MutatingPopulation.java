@@ -9,14 +9,16 @@ import de.mk.environment.PlayingField;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Represents a population of snakes that is one generation.
+ */
 public class MutatingPopulation implements IPopulation{
 
     private static int POPULATION_SIZE = 500;
     private static double MUTATION_RATE = 0.005;
-    private static int MIN_EVALUATION_RUNS = 50;
-    private static int MAX_EVALUATION_RUNS = 100;
-
-    private static int USE_BEST_X_FOR_FITNESS = 50;
+    private static double NEW_SNAKES_PER_POPULATION = 10;
+    private static int EVALUATION_RUNS = 50;
+    private static int USE_BEST_X_SNAKES_TO_COMPUTE_FITNESS = 50;
 
     private Snake prototypeSnake;
     private List<Snake> snakes;
@@ -32,32 +34,33 @@ public class MutatingPopulation implements IPopulation{
         System.out.print("Creating first generation...");
         this.snakes = this.createFirstGeneration(POPULATION_SIZE, 3, 500);
         System.out.println(" Done.");
-        computeSnakesFitness(MIN_EVALUATION_RUNS);
+        computeSnakesFitness(EVALUATION_RUNS);
         this.sortSnakes();
         this.populationFitness = this.computePopulationFitness();
         this.generation = 1;
     }
 
     public int evolve(){
+        double mutation_multipliers[] = {.0, .0, .1, .2, .5, 1.0, 1.0, 2.0, 5.0, 10.0};
         this.generation++;
         List<Snake> newSnakes = new ArrayList<>();
         for (int i=0; i<POPULATION_SIZE/10; i++) {
             Snake snake = snakes.get(i);
             String id = (i + 1) + "";
-            newSnakes.add(this.mutate(snake, id, 0.0));
-            newSnakes.add(this.mutate(snake, id, 0.0));
-            newSnakes.add(this.mutate(snake, id, MUTATION_RATE / 10.0));
-            newSnakes.add(this.mutate(snake, id, MUTATION_RATE / 5.0));
-            newSnakes.add(this.mutate(snake, id, MUTATION_RATE / 2.0));
-            newSnakes.add(this.mutate(snake, id, MUTATION_RATE));
-            newSnakes.add(this.mutate(snake, id, MUTATION_RATE));
-            newSnakes.add(this.mutate(snake, id, MUTATION_RATE * 2.0));
-            newSnakes.add(this.mutate(snake, id, MUTATION_RATE * 5.0));
-            newSnakes.add(this.mutate(snake, id, MUTATION_RATE * 10.0));
+            for (double mutation_multiplier : mutation_multipliers){
+                newSnakes.add(this.mutate(snake, id, MUTATION_RATE * mutation_multiplier));
+                if (newSnakes.size()>=POPULATION_SIZE-NEW_SNAKES_PER_POPULATION) break;
+            }
+            if (newSnakes.size()>=POPULATION_SIZE-NEW_SNAKES_PER_POPULATION) break;
+        }
+        while (newSnakes.size()<POPULATION_SIZE){
+            Snake snake = this.createSnakeFitterThan(3, 500);
+            if (snake!=null){
+                newSnakes.add(snake);
+            }
         }
         this.snakes = newSnakes;
-        int evalRuns = Math.min(Math.max(generation, MIN_EVALUATION_RUNS), MAX_EVALUATION_RUNS);
-        computeSnakesFitness(MIN_EVALUATION_RUNS);
+        computeSnakesFitness(EVALUATION_RUNS);
         this.sortSnakes();
         this.populationFitness = this.computePopulationFitness();
         return generation+1;
@@ -128,7 +131,7 @@ public class MutatingPopulation implements IPopulation{
         Snake snake = null;
         while(minScore>=score && tries<maxTries){
             PlayingField playingField = new PlayingField();
-            playingField.setSnake(new Snake("0:0", prototypeSnake.snakeBrain.initializeFirstGenerationBrain()));
+            playingField.setSnake(new Snake("NEW", prototypeSnake.snakeBrain.initializeFirstGenerationBrain()));
             playingField.moveSnakeUntilDead();
             if (playingField.snake.getScore()>bestScore){
                 snake = playingField.snake;
@@ -150,12 +153,12 @@ public class MutatingPopulation implements IPopulation{
         double average = 0;
         int i=1;
         for (Snake snake : this.snakes){
-            if (i<=USE_BEST_X_FOR_FITNESS) {
+            if (i<= USE_BEST_X_SNAKES_TO_COMPUTE_FITNESS) {
                 average += snake.fitness;
             }
             i++;
         }
-        int div = Math.min(this.snakes.size(), USE_BEST_X_FOR_FITNESS);
+        int div = Math.min(this.snakes.size(), USE_BEST_X_SNAKES_TO_COMPUTE_FITNESS);
         return average / div;
     }
 

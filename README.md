@@ -1,8 +1,8 @@
 # SnakeAI
 
-AI learns to play Sake
+AI learns to play "[Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre))".
 
-This project uses a combination of genetic algorithms and neural networks to teach an AI to play the game Snake.
+This project uses a combination of genetic algorithms and neural networks to teach an AI to play the game "Snake".
 
 A small 3-layer feedforward neural network is used as the snake's brain. After the first generation of snakes is 
 randomly initialized, each snake is tested in how it performs in the game. The best performing snakes make it to the

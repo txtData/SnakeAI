@@ -43,11 +43,4 @@ public class RandomInitializer implements IInitializer{
         }
     }
 
-    public void initialize(FeedforwardNeuralNetwork network, double from, double to){
-        this.from = from;
-        this.to = to;
-        for(int i = 0; i<network.layers.length; i++){
-            this.initialize(network.layers[i]);
-        }
-    }
 }

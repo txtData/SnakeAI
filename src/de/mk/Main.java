@@ -5,11 +5,13 @@ import de.mk.evolution.MutatingPopulation;
 import de.mk.environment.PlayingFieldWindow;
 import de.mk.environment.Snake;
 
+/**
+ * Main entry point to the application.
+ */
 public class Main {
 
+    //** Number of generations after which the program will terminate. **//
     private static int MAX_GENERATIONS = 5000;
-    private static boolean SHOW_ALWAYS = true;
-    private static int SHOW_GAME_AFTER_GENERATIONS = 10;
 
     public static void main(String[] args) {
         new Main();
@@ -26,7 +28,7 @@ public class Main {
             System.out.println("Gen "+generation+"\t"+population.toString());
             generation = population.evolve();
             fittestSnake = population.getFittestSnake();
-            if (!playingFieldWindow.isRunning() && (generation%SHOW_GAME_AFTER_GENERATIONS==0 || SHOW_ALWAYS)) {
+            if (!playingFieldWindow.isRunning()) {
                 playingFieldWindow.placeSnake(fittestSnake, generation, population.getPopulationFitness());
             }
         }

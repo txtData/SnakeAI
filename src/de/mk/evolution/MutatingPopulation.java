@@ -10,15 +10,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Represents a population of snakes that is one generation.
+ * Represents a population of snakes/one generation of snakes.
  */
 public class MutatingPopulation implements IPopulation{
 
-    private static int POPULATION_SIZE = 500;
-    private static double MUTATION_RATE = 0.005;
-    private static double NEW_SNAKES_PER_POPULATION = 10;
-    private static int EVALUATION_RUNS = 50;
-    private static int USE_BEST_X_SNAKES_TO_COMPUTE_FITNESS = 50;
+    //** The number of snakes the population/generation. **/
+    private static final int POPULATION_SIZE = 500;
+
+    //** Fraction of genes/neurons that will be mutated in each generation. **/
+    private static final double MUTATION_RATE = 0.005;
+
+    //** New snakes that are added in each generation. **//
+    private static final double NEW_SNAKES_PER_POPULATION = 0;
+
+    //** How many times the performance of a snake in the game is tested to determine its fitness. **//
+    private static final int EVALUATION_RUNS_PER_SNAKE = 25;
+
+    //** Number of snakes that are used to compute the fitness of the whole population. **//
+    private static final int USE_BEST_X_SNAKES_TO_COMPUTE_POPULATION_FITNESS = 50;
 
     private Snake prototypeSnake;
     private List<Snake> snakes;
@@ -29,19 +38,23 @@ public class MutatingPopulation implements IPopulation{
     public MutatingPopulation(){
     }
 
+    /**
+     * Creates a first generation of snakes, whose brains are randomly initialized.
+     * (Typically, these snakes are rather stupid.)
+     **/
     public void createFirstGeneration(){
         this.prototypeSnake = new Snake("Prototpye", new NNBrain(new SnakeVision()));
         System.out.print("Creating first generation...");
-        this.snakes = this.createFirstGeneration(POPULATION_SIZE, 3, 500);
+        this.snakes = this.createFirstGeneration(POPULATION_SIZE, 3, 100);
         System.out.println(" Done.");
-        computeSnakesFitness(EVALUATION_RUNS);
+        computeSnakesFitness(EVALUATION_RUNS_PER_SNAKE);
         this.sortSnakes();
         this.populationFitness = this.computePopulationFitness();
         this.generation = 1;
     }
 
     public int evolve(){
-        double mutation_multipliers[] = {.0, .0, .1, .2, .5, 1.0, 1.0, 2.0, 5.0, 10.0};
+        double[] mutation_multipliers = {.0, .0, .1, .2, .5, 1.0, 1.0, 2.0, 5.0, 10.0};
         this.generation++;
         List<Snake> newSnakes = new ArrayList<>();
         for (int i=0; i<POPULATION_SIZE/10; i++) {
@@ -60,7 +73,7 @@ public class MutatingPopulation implements IPopulation{
             }
         }
         this.snakes = newSnakes;
-        computeSnakesFitness(EVALUATION_RUNS);
+        computeSnakesFitness(EVALUATION_RUNS_PER_SNAKE);
         this.sortSnakes();
         this.populationFitness = this.computePopulationFitness();
         return generation+1;
@@ -75,16 +88,21 @@ public class MutatingPopulation implements IPopulation{
     }
 
     public String toString(){
-        return this.toString(10);
+        return this.toString(5);
     }
 
-    public String toString(int top){
+    /**
+     * Returns a string that helps to understand the fitness of the current population.
+     * @param include_best_x_snakes The number of snakes to include.
+     * @return A string that helps to understand the fitness of the current population.
+     */
+    public String toString(int include_best_x_snakes){
         StringBuilder sb = new StringBuilder();
-        sb.append(String.format("Population Fitness: %6.3f\t\t Best %d:", this.populationFitness, top)).append(" [");
+        sb.append(String.format("Population Fitness: %6.3f\t\t Best %d:", this.populationFitness, include_best_x_snakes)).append(" [");
         int i = 0;
         for (Snake snake : this.snakes){
             sb.append(String.format("%5.02f", snake.fitness)).append(", ");
-            if (i>top) break;
+            if (i>include_best_x_snakes) break;
             i++;
         }
         sb.delete(sb.length()-2, sb.length());
@@ -93,7 +111,7 @@ public class MutatingPopulation implements IPopulation{
         sb.append("\t\tGene profiles: [");
         for (Snake snake : this.snakes){
             sb.append(String.format("%1$4s",snake.name)).append(", ");
-            if (i>top) break;
+            if (i>include_best_x_snakes) break;
             i++;
         }
         sb.delete(sb.length()-2, sb.length());
@@ -115,7 +133,7 @@ public class MutatingPopulation implements IPopulation{
 
     private Snake mutate(Snake parent, String name, double mutationRate){
         Snake clone = parent.clone(name, true);
-        int mutations = NNMutation.mutate(clone, mutationRate, new RandomInitializer());
+        int mutations = NeuralNetworkMutation.mutate(clone, mutationRate, new RandomInitializer());
         clone.name += ":"+mutations;
         return clone;
     }
@@ -153,12 +171,12 @@ public class MutatingPopulation implements IPopulation{
         double average = 0;
         int i=1;
         for (Snake snake : this.snakes){
-            if (i<= USE_BEST_X_SNAKES_TO_COMPUTE_FITNESS) {
+            if (i<= USE_BEST_X_SNAKES_TO_COMPUTE_POPULATION_FITNESS) {
                 average += snake.fitness;
             }
             i++;
         }
-        int div = Math.min(this.snakes.size(), USE_BEST_X_SNAKES_TO_COMPUTE_FITNESS);
+        int div = Math.min(this.snakes.size(), USE_BEST_X_SNAKES_TO_COMPUTE_POPULATION_FITNESS);
         return average / div;
     }
 

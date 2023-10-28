@@ -8,9 +8,16 @@ import de.mk.environment.Snake;
  */
 public interface IPopulation {
 
+    //** Creates a first generation of snakes. **//
     void createFirstGeneration();
+
+    //** Evolves the population to the next generation. Returns the current generation count. *+//
     int evolve();
+
+    //** Returns this populations fitness. *+//
     double getPopulationFitness();
+
+    //** returns the fittest snake. **//
     Snake getFittestSnake();
 
 }

@@ -6,6 +6,9 @@ import de.mk.environment.PlayingField;
 import de.mk.environment.Snake;
 import de.mk.brain.nn.*;
 
+/**
+ * Implementation of a snake's brain using a three layer feedforward neural network.
+ */
 public class NNBrain implements ISnakeBrain{
 
     public ISnakeSensors snakeSensors;

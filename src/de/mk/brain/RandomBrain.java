@@ -5,6 +5,9 @@ import de.mk.environment.Direction;
 import de.mk.environment.PlayingField;
 import de.mk.environment.Snake;
 
+/**
+ * Implementation of a snake's brain that makes completely random movements.
+ */
 public class RandomBrain implements ISnakeBrain{
 
     public ISnakeBrain initializeFirstGenerationBrain(){

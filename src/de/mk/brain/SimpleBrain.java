@@ -8,6 +8,9 @@ import de.mk.environment.Thing;
 
 import java.util.Arrays;
 
+/**
+ * Implementation of a snake's brain that always goes straight for the food if it is in sight.
+ */
 public class SimpleBrain implements ISnakeBrain{
 
     public ISnakeSensors snakeSensors;

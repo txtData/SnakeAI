@@ -11,13 +11,9 @@ import de.mk.environment.Snake;
 public class Main {
 
     //** Number of generations after which the program will terminate. **//
-    private static int MAX_GENERATIONS = 5000;
+    private static final int MAX_GENERATIONS = 5000;
 
     public static void main(String[] args) {
-        new Main();
-    }
-
-    private Main(){
         PlayingFieldWindow playingFieldWindow = new PlayingFieldWindow();
         playingFieldWindow.showGame();
         IPopulation population = new MutatingPopulation();

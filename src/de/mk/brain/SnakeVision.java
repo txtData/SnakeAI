@@ -6,6 +6,10 @@ import de.mk.environment.PlayingField;
 import de.mk.environment.Snake;
 import de.mk.environment.Thing;
 
+/*
+ * Implements the snake's vision. The snake can look in all four directions, and will see for each direction how far
+ * away the wall, the snake's body or the food is.
+ */
 public class SnakeVision implements ISnakeSensors {
 
     private static int sensorArraySize = 12;

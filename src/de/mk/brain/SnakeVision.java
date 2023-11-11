@@ -12,7 +12,7 @@ import de.mk.environment.Thing;
  */
 public class SnakeVision implements ISnakeSensors {
 
-    private static int sensorArraySize = 12;
+    private static final int sensorArraySize = 12;
 
     public SnakeVision(){}
 
@@ -44,8 +44,8 @@ public class SnakeVision implements ISnakeSensors {
 
     public static String toString(double[] vision){
         StringBuilder sb = new StringBuilder();
-        for (int i=0; i<vision.length; i++){
-            sb.append("[").append(String.format("%+.3f",vision[i])).append("]");
+        for (double v : vision) {
+            sb.append("[").append(String.format("%+.3f", v)).append("]");
         }
         return sb.toString();
     }

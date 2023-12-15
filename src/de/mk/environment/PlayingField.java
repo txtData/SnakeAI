@@ -7,6 +7,8 @@ public class PlayingField {
 
     private int[][] field;
 
+    private int[] foodPosition = {-1,-1};
+
     public Snake snake;
 
     public PlayingField(){
@@ -70,6 +72,10 @@ public class PlayingField {
         return this.field[coordinates.x][coordinates.y];
     }
 
+    public int[] getFoodPosition(){
+        return this.foodPosition;
+    }
+
     public boolean is(Coordinates coordinates, int value){
         return this.getAt(coordinates)==value;
     }
@@ -92,6 +98,8 @@ public class PlayingField {
             int y = (int) (Math.random() * (HEIGHT - 2)) + 1;
             if (this.field[x][y]==Thing.BACKGROUND){
                 field[x][y] = Thing.FOOD;
+                this.foodPosition[0] = x;
+                this.foodPosition[1] = y;
                 placed = true;
             }
         }

@@ -30,7 +30,7 @@ public class SnakeVision implements ISnakeSensors {
         return results;
     }
 
-    private static double lookFor(PlayingField playingField,  Coordinates position, Direction direction, Thing lookFor){
+    protected static double lookFor(PlayingField playingField,  Coordinates position, Direction direction, Thing lookFor){
         int lookingAt = Thing.BACKGROUND;
         double distance = 0;
         while(lookingAt==Thing.BACKGROUND){

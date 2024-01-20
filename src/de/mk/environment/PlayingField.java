@@ -2,8 +2,8 @@ package de.mk.environment;
 
 public class PlayingField {
 
-    private static int WIDTH = 25;
-    private static int HEIGHT = 20;
+    private static final int WIDTH = 25;
+    private static final int HEIGHT = 20;
 
     private int[][] field;
 

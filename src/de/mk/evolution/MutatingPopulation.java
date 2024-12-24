@@ -1,8 +1,8 @@
 package de.mk.evolution;
 
-import de.mk.environment.Snake;
 import de.mk.brain.NNBrain;
 import de.mk.brain.SnakeVision;
+import de.mk.environment.Snake;
 import de.mk.brain.nn.RandomInitializer;
 import de.mk.environment.PlayingField;
 

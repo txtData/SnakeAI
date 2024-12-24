@@ -21,7 +21,7 @@ public class NeuralNetworkMutation {
      */
     public static int mutate(Snake snake, double mutationRate, RandomInitializer initializer){
         if (snake.snakeBrain instanceof NNBrain){
-            return NeuralNetworkMutation.mutate(((NNBrain) snake.snakeBrain).neuralNetwork, mutationRate, initializer);
+            return NeuralNetworkMutation.mutate(((NNBrain) snake.snakeBrain).getNeuralNetwork(), mutationRate, initializer);
         }
         return -1;
     }

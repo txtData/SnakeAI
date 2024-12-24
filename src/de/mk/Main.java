@@ -18,13 +18,17 @@ public class Main {
         playingFieldWindow.showGame();
         IPopulation population = new MutatingPopulation();
         population.createFirstGeneration();
+        runEvolution(playingFieldWindow, population);
+    }
+
+    private static void runEvolution(PlayingFieldWindow playingFieldWindow, IPopulation population) {
         Snake fittestSnake;
         int generation = 1;
-        while (generation<=MAX_GENERATIONS){
-            System.out.println("Gen "+generation+"\t"+population.toString());
+        while (generation <= MAX_GENERATIONS) {
+            System.out.println("Gen " + generation + "\t" + population.toString());
             generation = population.evolve();
             fittestSnake = population.getFittestSnake();
-            if (!playingFieldWindow.isRunning()) {
+            if (fittestSnake != null && !playingFieldWindow.isRunning()) {
                 playingFieldWindow.placeSnake(fittestSnake, generation, population.getPopulationFitness());
             }
         }

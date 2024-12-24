@@ -2,7 +2,7 @@ package de.mk.environment;
 
 public class Thing {
 
-    public int thing = 0;
+    public int thing;
 
     public static final int BACKGROUND = 0;
     public static final int WALL = 1;
